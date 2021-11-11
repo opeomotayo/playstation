@@ -1,0 +1,79 @@
+---
+- hosts: kworkers
+  become: True
+  # remote_user: root
+  vars:
+       members: "{{ groups['kworkers'] }}"
+       etcd_version: "3.5.1"
+  tasks:
+  - name: Remove any old existing etcd
+    package:
+      name: etcd
+      state: absent
+    ignore_errors: yes
+  - name: Remove any old existing etcd2
+    package:
+      name: etcd3
+      state: absent
+    ignore_errors: yes
+  - name: "Create directory for etcd binaries"
+    file:
+      path: /usr/local/bin
+      state: directory
+      owner: root
+      group: root
+      mode: 0700
+  - name: "Download the tarball into the /tmp directory"
+    get_url:
+      url: https://storage.googleapis.com/etcd/v{{ etcd_version }}/etcd-v{{ etcd_version }}-linux-amd64.tar.gz
+      dest: /tmp/etcd.tar.gz
+      owner: root
+      group: root
+      mode: 0600
+      force: True
+  - name: "Extract the contents of the tarball"
+    unarchive:
+      src: /tmp/etcd.tar.gz
+      dest: /usr/local/bin/
+      owner: root
+      group: root
+      mode: 0600
+      extra_opts:
+        - --strip-components=1
+      decrypt: True
+      remote_src: True
+  - name: "Set permissions for etcd"
+    file:
+      path: /usr/local/bin/etcd
+      state: file
+      owner: root
+      group: root
+      mode: 0700
+  - name: "Set permissions for etcdctl"
+    file:
+      path: /usr/local/bin/etcdctl
+      state: file
+      owner: root
+      group: root
+      mode: 0700
+  - name: "Create a data directory"
+    file:
+      path: /var/lib/etcd
+      state: "{{ item }}"
+      owner: root
+      group: root
+      mode: 0755
+    with_items:
+      - absent
+      - directory
+  - template:
+       src: ./etcd3.service.js
+       dest: /etc/systemd/system/etcd3.service
+       owner: root
+       group: root
+       mode: 0644
+  - name: Reload and start the services
+    shell: |
+       systemctl daemon-reload
+       systemctl enable etcd3.service
+       systemctl start  etcd3.service

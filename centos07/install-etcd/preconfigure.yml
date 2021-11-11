@@ -1,0 +1,5 @@
+---
+- hosts: kworkers
+  roles:
+    - { role: preconfigure }
+...
