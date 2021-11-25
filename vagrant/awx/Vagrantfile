@@ -1,0 +1,28 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+
+Vagrant.configure(2) do |config|
+
+  NodeCount = 1
+
+  (1..NodeCount).each do |i|
+    config.vm.define "awxvm0#{i}" do |node|
+      node.vm.box = "bento/ubuntu-20.04"
+      node.vm.hostname = "awxvm0#{i}.comvagra"
+      node.vm.network "private_network", ip: "172.10.10.10#{i}"
+      node.vbguest.installer_options = { allow_kernel_upgrade: true }
+      node.vm.provision :docker
+      node.vagrant.plugins = "vagrant-docker-compose"
+      node.vm.provider "virtualbox" do |v|
+        v.name = "awxvm0#{i}"
+        v.memory = 8192
+        v.cpus = 4
+      end
+    end
+  end
+
+end
+
+

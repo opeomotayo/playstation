@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"/Users/opeomotayo/playstation/vagrant/rancher","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
