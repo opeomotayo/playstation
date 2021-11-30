@@ -1,0 +1,16 @@
+[kworkers]
+kworker1 ansible_host=192.168.60.11
+kworker2 ansible_host=192.168.60.12
+kworker3 ansible_host=192.168.60.13
+
+[all:vars]
+#ansible_python_interpreter=/usr/bin/python3
+ansible_user=vagrant
+#ansible_password=vagrant
+#ansible_sudo_password=vagrant
+
+#ansible all -i hosts -m ping -v
+#ansible-playbook -i hosts setup-ansible/preconfigure.yml -v
+
+#to test etcdctl commands run:
+#sudo -i && source /etc/profile

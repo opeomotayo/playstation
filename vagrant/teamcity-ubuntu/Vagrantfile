@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+
+Vagrant.configure(2) do |config|
+
+  NodeCount = 2
+
+  (1..NodeCount).each do |i|
+    config.vm.define "teamcityubuntu#{i}" do |node|
+      node.vm.box = "bento/ubuntu-20.04"
+      node.vm.hostname = "teamcityubuntu#{i}.com"
+      node.vm.network "private_network", ip: "172.20.10.10#{i}"
+      node.vbguest.installer_options = { allow_kernel_upgrade: true }
+      node.vm.provision :docker
+      node.vagrant.plugins = "vagrant-docker-compose"
+      node.vm.provider "virtualbox" do |v|
+        v.name = "teamcityubuntu#{i}"
+        v.memory = 4096
+        v.cpus = 2
+      end
+    end
+  end
+
+end

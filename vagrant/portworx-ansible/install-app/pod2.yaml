@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod2
+spec:
+  containers:
+  - name: test-container
+    image: gcr.io/google_containers/test-webserver
+    volumeMounts:
+    - name: shared-volume
+      mountPath: /shared-portworx-volume
+  volumes:
+  - name: shared-volume
+    persistentVolumeClaim:
+      claimName: postgres-data

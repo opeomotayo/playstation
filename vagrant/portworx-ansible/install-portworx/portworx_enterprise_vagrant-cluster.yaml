@@ -1,0 +1,32 @@
+# SOURCE: https://install.portworx.com/?operator=true&mc=false&kbver=1.21.5&k=etcd%3Ahttp%3A%2F%2F192.168.60.11%3A2379%20%2Cetcd%3Ahttp%3A%2F%2F192.168.60.12%3A2379%20%2Cetcd%3Ahttp%3A%2F%2F192.168.60.13%3A2379&s=%2Fdev%2Fsdb&m=eth1&d=eth1&c=on-prem-cluster-bc78bb5b-65ce-4da1-bac9-8ade824f5483&stork=true&csi=true&tel=false&st=k8s
+# kubectl apply -f 'https://install.portworx.com/2.8?comp=pxoperator'
+kind: StorageCluster
+apiVersion: core.libopenstorage.org/v1
+metadata:
+  name: macbook-cluster
+  namespace: kube-system
+  annotations:
+    portworx.io/install-source: "https://install.portworx.com/?operator=true&mc=false&kbver=1.21.5&k=etcd%3Ahttp%3A%2F%2F192.168.60.11%3A2379%20%2Cetcd%3Ahttp%3A%2F%2F192.168.60.12%3A2379%20%2Cetcd%3Ahttp%3A%2F%2F192.168.60.13%3A2379&s=%2Fdev%2Fsdb&m=eth1&d=eth1&c=macbook-cluster&stork=true&csi=false&tel=false&st=k8s"
+spec:
+  image: portworx/oci-monitor:2.8.0
+  imagePullPolicy: Always
+  kvdb:
+    endpoints:
+    - etcd:http://192.168.60.11:2379
+    - etcd:http://192.168.60.12:2379
+    - etcd:http://192.168.60.13:2379
+  storage:
+    devices:
+    - /dev/sdb
+  network:
+    dataInterface: eth1
+    mgmtInterface: eth1
+  secretsProvider: k8s
+  stork:
+    enabled: true
+    args:
+      webhook-controller: "false"
+  autopilot:
+    enabled: true
+  featureGates:
+    CSI: "false"
