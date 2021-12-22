@@ -1,5 +1,7 @@
 # playstation
 
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_YjRhN2NiNzctMDEwOS00NzEyLTg0MjEtZGE2MmJhMjg5Y2I3%40thread.v2/0?context=%7b%22Tid%22%3a%223ded2960-214a-46ff-8cf4-611f125e2398%22%2c%22Oid%22%3a%2269e99d36-2930-47bf-9333-b429e6fd751c%22%7d 
+
 projects i need to create to solidify my knowledge of certain skills (preference: use helm/rancher/awx)
 1: install and connect etcd to portworx cluster and use it to manage app volumes (status: noincomplete)
 issues:
